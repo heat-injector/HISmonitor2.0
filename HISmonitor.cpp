@@ -12,8 +12,8 @@
     long heatStopTime = 0;          //recorded millis time when flame turns off
     long deltaHeatTime = 0;         //calculated delta between off and on
 
-    const int collectHours = D4;    //TrackerSOM PIND4 - Input_PULLDOWN 3.3v signal for flame ON
-    int isPoweredOn = D5;         //TrackerSOM PIND5 - Input_PULLDOWN signal for power to unit
+    //const collectHours = D4;    //TrackerSOM PIND4 - Input_PULLDOWN 3.3v signal for flame ON
+    //const isPoweredOn = D5;         //TrackerSOM PIND5 - Input_PULLDOWN signal for power to unit
     int shutdownHeat = D1;          //TrackerSOM PIND1 - "shutdownHeat" is "set" on latching relay, NO contact. When High for 1sec it will shutdown heat.
     int enableHeat = D0;            //TrackerSOM PIND0 - "enableHeat" is "reset" on latching relay, NC contact. When High for 1sec it will Enable heat.
     int adminRelay = D3;            //TrackerSOM PIND3 - relay to toggle when the VCC hits the latching relay.
@@ -46,8 +46,11 @@ void setup()
     pinMode(CAN_PWR, OUTPUT);               //Set 5v to the CAN VCC
     digitalWrite(CAN_PWR, HIGH);            //Set 5v to the CAN VCC
 
-    pinMode(collectHours, INPUT_PULLDOWN);  //Setting pinMode for collectHours as input_pulldown
-    pinMode(isPoweredOn, INPUT_PULLDOWN);       //Setting pinMode for power as input_pulldown
+    //pinMode(collectHours, INPUT_PULLUP);  //Setting pinMode for collectHours as input_pulldown
+    //pinMode(isPoweredOn, INPUT_PULLUP);       //Setting pinMode for power as input_pulldown
+    pinMode(D4, INPUT);
+    pinMode(D5, INPUT_PULLDOWN);
+
 
     pinMode(shutdownHeat, OUTPUT);          //Shutdown output
     digitalWrite(shutdownHeat, LOW);        //sets the pin to low
@@ -72,9 +75,9 @@ void loop()
 {
     Tracker::instance().loop();
 
-    flameOn = (digitalRead(A4));  //boolian for if flame is on
+    flameOn = digitalRead(D4);  //boolian for if flame is on
     delay(5);
-    powerOn = (digitalRead(A5));
+    powerOn = digitalRead(D5);
     //powerOn = digitalRead(D5);  //boolian for if power on
     //powerOn = digitalRead(poweredOn);  //Test for digitalRead 
 
@@ -111,7 +114,7 @@ void loop()
             delayMinutes = 1;
         }
         
-        if (isPoweredOn == LOW)
+        if (D5 == LOW)
             {
             if (previousPowerOn == HIGH)
                 {
