@@ -46,8 +46,8 @@ void setup()
     pinMode(CAN_PWR, OUTPUT);               //Set 5v to the CAN VCC
     digitalWrite(CAN_PWR, HIGH);            //Set 5v to the CAN VCC
 
-    pinMode(collectHours, INPUT_PULLUP);  //Setting pinMode for collectHours as input_pulldown
-    pinMode(isPoweredOn, INPUT_PULLUP);       //Setting pinMode for power as input_pulldown
+    pinMode(collectHours, INPUT_PULLDOWN);  //Setting pinMode for collectHours as input_pulldown
+    pinMode(isPoweredOn, INPUT_PULLDOWN);       //Setting pinMode for power as input_pulldown
 
     pinMode(shutdownHeat, OUTPUT);          //Shutdown output
     digitalWrite(shutdownHeat, LOW);        //sets the pin to low
