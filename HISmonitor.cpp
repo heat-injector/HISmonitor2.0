@@ -85,14 +85,19 @@ void loop()
         {   //Record stop time and send hrs
             heatStopTime = millis();                        //Store current millis for flame stop time
             deltaHeatTime = heatStopTime - heatStartTime;   //calculate delta heat time between flame on and flame off
-            deltaHeatTime = ((deltaHeatTime / 1000) / 60);  //Convert millisecond to minutes 
+            deltaHeatTime = ((deltaHeatTime / 1000) / 60);  //Convert millisecond to minutes
+            
+            if (deltaHeatTime > 0)
+            {
             heatTime = String(deltaHeatTime);               //Store delta minues in heatTime 
             waitFor(Particle.connected, 10000);             //Give the partice a few minutes to connect
             Particle.publish("hrs", heatTime, PRIVATE);     //publish delta heat time as hrs
             delay(3000);
+            }    
         }   //Record stop time and send hrs
     }   //If flame is off - Run once
-
+    
+    previousFlameOn = flameOn;  //change flame on state
     
     if (digitalRead(isPoweredOn) == HIGH)
     {  
@@ -121,7 +126,6 @@ void loop()
             }
     }
     
-    previousFlameOn = flameOn;  //change flame on state
     previousPowerOn = powerOn;  //change power on state
     previousSleep = updateMode;  //Change keepAlive status
 } //Loop Out
